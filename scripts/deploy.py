@@ -1,14 +1,12 @@
-from brownie import accounts,  myToken, network
+from brownie import MyToken
 from scripts.helpful_script import get_accounts
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def deploy_token():
-  account = get_accounts()
-  token = myToken.deploy({'from': account})
-
+def deploy_token(account):
+  token = MyToken.deploy({'from': account})
+  return token
 
 def main():
   deploy_token()

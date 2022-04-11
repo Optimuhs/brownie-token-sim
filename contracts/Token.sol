@@ -1,7 +1,7 @@
 // SPDX-Licence-Identifier: MIT
 pragma solidity >=0.6.0 <0.9.0;
 
-contract myToken {
+contract MyToken {
 
   struct Set{
     address[] users;
@@ -45,11 +45,13 @@ contract myToken {
   function transferTokens(address _receiver, address _user, uint256 _amount) public{
     require(_user != _receiver, "Cannot send tokens to yourself");
     require(_amount > 0, "Amount of tokens being sent needs to be more than 0");
-    userSet.userTokenMap[_user] -= _amount;
-    userSet.userTokenMap[_receiver] += _amount;
+    require(userSet.userTokenMap[_user] - _amount > 0, "Cannot send more tokens than what you have");
     if (userSet.userAdded[_receiver] != true){
       userSet.userAdded[_receiver] = true;
       userSet.users.push(_receiver);
+    } else{
+    userSet.userTokenMap[_user] -= _amount;
+    userSet.userTokenMap[_receiver] += _amount;
     }
   }
 
